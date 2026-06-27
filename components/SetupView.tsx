@@ -32,7 +32,7 @@ const SetupView: React.FC<SetupViewProps> = ({ settings, onSave, profile, invite
   const [showTooltip, setShowTooltip] = useState(false);
 
   const handleCopy = () => {
-    const text = inviteCode ?? formData.flatName.replace(/\s+/g, '-').toLowerCase();
+    const text = `Hi co-live,\nyou're invited to join ${formData.flatName} on Chore-to-Mate!\n\nSign up at https://chore-to-mate.vercel.app and enter invite code: ${inviteCode}`;
     navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
@@ -156,8 +156,8 @@ const SetupView: React.FC<SetupViewProps> = ({ settings, onSave, profile, invite
             saved
               ? { background: 'linear-gradient(135deg, #059669, #10b981)', boxShadow: '0 4px 14px rgba(5,150,105,0.3)', color: 'white' }
               : hasChanges
-              ? { background: 'linear-gradient(135deg, #4F52A0, #6466C8)', boxShadow: '0 4px 14px rgba(79,82,160,0.35)', color: 'white' }
-              : { background: '#EEEDF8', color: '#C4C2DC' }
+                ? { background: 'linear-gradient(135deg, #4F52A0, #6466C8)', boxShadow: '0 4px 14px rgba(79,82,160,0.35)', color: 'white' }
+                : { background: '#EEEDF8', color: '#C4C2DC' }
           }
         >
           {saved ? <><Check size={16} /> Saved</> : 'Save Changes'}
