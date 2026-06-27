@@ -12,6 +12,7 @@ const LoginView: React.FC<LoginViewProps> = ({ onAuth }) => {
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
+  const [verifyEmail, setVerifyEmail] = useState('');
 
   const inputCls = 'w-full bg-gray-50 border border-gray-200 rounded-xl p-3 text-sm font-medium text-gray-800 outline-none focus:border-[#4F52A0] focus:bg-white transition-all placeholder:text-gray-300';
 
@@ -26,6 +27,8 @@ const LoginView: React.FC<LoginViewProps> = ({ onAuth }) => {
 
       if (error) {
         setError(error.message);
+      } else if (isSignUp) {
+        setVerifyEmail(email);
       } else {
         onAuth();
       }
@@ -33,6 +36,27 @@ const LoginView: React.FC<LoginViewProps> = ({ onAuth }) => {
       setLoading(false);
     }
   };
+
+  if (verifyEmail) {
+    return (
+      <div className="fixed inset-0 z-[100] bg-white flex flex-col items-center justify-center px-6">
+        <div className="w-full max-w-sm space-y-4 text-center">
+          <div className="text-4xl">📬</div>
+          <h1 className="text-2xl font-extrabold text-gray-900">Check your email</h1>
+          <p className="text-sm text-gray-500">
+            We sent a verification link to <span className="font-semibold text-gray-800">{verifyEmail}</span>.
+            Click the link in the email to activate your account, then come back and sign in.
+          </p>
+          <button
+            onClick={() => { setVerifyEmail(''); setIsSignUp(false); }}
+            className="btn-primary w-full text-white py-3.5 rounded-2xl font-bold text-sm transition-all active:scale-95 mt-4"
+          >
+            Back to sign in
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="fixed inset-0 z-[100] bg-white flex flex-col items-center justify-center px-6">
