@@ -32,7 +32,7 @@ const SetupView: React.FC<SetupViewProps> = ({ settings, onSave, profile, invite
   const [showTooltip, setShowTooltip] = useState(false);
 
   const handleCopy = () => {
-    const text = `Hi co-live,\nyou're invited to join ${formData.flatName} on Chore-to-Mate!\n\nSign up at https://chore-to-mate.vercel.app and enter invite code: ${inviteCode}`;
+    const text = `Hi co-live,\n\nYou're invited to join ${formData.flatName} on Chore-to-Mate!\n\nSign up at https://chore-to-mate.vercel.app and enter invite code: ${inviteCode}\n\nWarm Regards,\n${profile.name}`;
     navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
