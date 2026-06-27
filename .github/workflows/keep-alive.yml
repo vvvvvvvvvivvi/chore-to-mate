@@ -3,15 +3,34 @@ name: Supabase Keep-Alive
 on:
   schedule:
     - cron: '0 9 */3 * *'   # every 3 days at 09:00 UTC
-  workflow_dispatch:          # can also be triggered manually
+  workflow_dispatch:          # lets you trigger it manually too
+
+permissions:
+  contents: write             # needed to push the timestamp commit
 
 jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
       - name: Query Supabase
         run: |
           curl --fail -s \
-            "${{ secrets.SUPABASE_URL }}/rest/v1/profiles?select=*&limit=1" \
+            "${{ secrets.SUPABASE_URL }}/rest/v1/push_subscriptions?select=*&limit=1" \
             -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
             -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}"
+
+      - name: Update timestamp
+        run: |
+          mkdir -p .keep-alive
+          date -u +"%Y-%m-%dT%H:%M:%SZ" > .keep-alive/last-run.txt
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .keep-alive/last-run.txt
+          git commit -m "chore: keep-alive ping $(date -u +%Y-%m-%d)" || exit 0
+          git push
